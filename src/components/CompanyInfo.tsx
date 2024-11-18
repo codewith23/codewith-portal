@@ -1,4 +1,4 @@
-import { Building2, Calendar, User, Coins } from "lucide-react";
+import { Building2, Calendar, User, Coins, Briefcase } from "lucide-react";
 import { Card } from "./ui/card";
 
 const CompanyInfo = () => {
@@ -22,6 +22,11 @@ const CompanyInfo = () => {
       icon: <Coins className="h-6 w-6" />,
       label: "資本金",
       value: "200千円",
+    },
+    {
+      icon: <Briefcase className="h-6 w-6" />,
+      label: "事業内容",
+      value: "IT教育事業、受託開発ソフトウェア業、情報通信業",
     },
   ];
 
