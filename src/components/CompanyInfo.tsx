@@ -31,13 +31,14 @@ const CompanyInfo = () => {
   ];
 
   return (
-    <section id="company" className="py-16 md:py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <section id="company" className="relative py-16 md:py-24">
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7')] opacity-5 bg-cover bg-center" />
+      <div className="container mx-auto px-4 relative">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
           会社情報
         </h2>
         <div className="max-w-2xl mx-auto">
-          <Card className="p-6">
+          <Card className="p-6 bg-white/80 backdrop-blur-sm">
             <div className="space-y-6">
               {companyDetails.map((detail) => (
                 <div key={detail.label} className="flex items-start space-x-4">

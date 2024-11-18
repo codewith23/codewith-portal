@@ -25,15 +25,16 @@ const services = [
 
 const Services = () => {
   return (
-    <section id="services" className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
+    <section id="services" className="relative py-16 md:py-24">
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518770660439-4636190af475')] opacity-5 bg-cover bg-center" />
+      <div className="container mx-auto px-4 relative">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
           サービス内容
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service) => (
             <Link key={service.title} to={`/services/${service.slug}`}>
-              <Card className="h-full hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+              <Card className="h-full hover:shadow-lg transition-shadow duration-200 cursor-pointer bg-white/80 backdrop-blur-sm">
                 <CardHeader>
                   <div className="flex justify-center mb-6">{service.icon}</div>
                   <CardTitle className="text-xl text-center">{service.title}</CardTitle>

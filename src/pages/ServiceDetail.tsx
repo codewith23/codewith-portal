@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Card, CardContent } from "@/components/ui/card";
 
 const serviceDetails = {
   "it-education": {
@@ -78,26 +77,32 @@ const ServiceDetail = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <Header />
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b')] opacity-5 bg-cover bg-center fixed -z-10" />
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold mb-4 gradient-text">{service.title}</h1>
           <p className="text-xl text-gray-600 mb-12">{service.description}</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="space-y-16">
             {service.businesses.map((business, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                <img
-                  src={business.image}
-                  alt={business.title}
-                  className="w-full h-48 object-cover"
-                />
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-3">{business.title}</h3>
-                  <p className="text-gray-600">{business.description}</p>
-                </CardContent>
-              </Card>
+              <div 
+                key={index} 
+                className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}
+              >
+                <div className="w-full md:w-1/2">
+                  <img
+                    src={business.image}
+                    alt={business.title}
+                    className="w-full h-64 object-cover rounded-lg shadow-lg"
+                  />
+                </div>
+                <div className="w-full md:w-1/2 space-y-4">
+                  <h3 className="text-2xl font-semibold gradient-text">{business.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{business.description}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>

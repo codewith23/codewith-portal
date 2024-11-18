@@ -2,8 +2,9 @@ import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-orange-50 to-teal-50">
-      <div className="container mx-auto px-4">
+    <section className="relative pt-24 pb-16 md:pt-32 md:pb-24">
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297484001-80022131f5a1')] opacity-5 bg-cover bg-center" />
+      <div className="container mx-auto px-4 relative">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text animate-fade-up">
             すべての世代にITの恩恵を
