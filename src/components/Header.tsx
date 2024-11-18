@@ -6,56 +6,53 @@ const Header = () => {
 
   const menuItems = [
     { name: "ホーム", href: "/" },
-    { name: "会社情報", href: "#company" },
     { name: "サービス", href: "#services" },
+    { name: "会社情報", href: "#company" },
     { name: "ブログ", href: "#blog" },
     { name: "お問い合わせ", href: "#contact" },
   ];
 
   return (
-    <header className="fixed w-full bg-white/90 backdrop-blur-sm z-50 shadow-sm">
+    <header className="fixed w-full bg-primary z-50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <a href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-primary">CodeWith</span>
+            <span className="text-2xl font-bold text-white">CodeWith</span>
           </a>
 
-          {/* Desktop Menu */}
           <nav className="hidden md:flex space-x-8">
             {menuItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-600 hover:text-primary transition-colors duration-200"
+                className="text-white hover:text-white/80 transition-colors duration-200"
               >
                 {item.name}
               </a>
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            className="md:hidden text-white"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="メニュー"
           >
             {isOpen ? (
-              <X className="h-6 w-6 text-gray-600" />
+              <X className="h-6 w-6" />
             ) : (
-              <Menu className="h-6 w-6 text-gray-600" />
+              <Menu className="h-6 w-6" />
             )}
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg animate-fade-down">
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-primary shadow-lg animate-fade-down">
             <nav className="flex flex-col space-y-4 p-4">
               {menuItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-gray-600 hover:text-primary transition-colors duration-200"
+                  className="text-white hover:text-white/80 transition-colors duration-200"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}

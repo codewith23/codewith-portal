@@ -1,4 +1,5 @@
 import { Building2, Calendar, User, Coins } from "lucide-react";
+import { Card } from "./ui/card";
 
 const CompanyInfo = () => {
   const companyDetails = [
@@ -30,24 +31,20 @@ const CompanyInfo = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
           会社情報
         </h2>
-        <div className="max-w-3xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {companyDetails.map((detail, index) => (
-              <div
-                key={detail.label}
-                className="bg-white p-6 rounded-lg shadow-md animate-fade-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="flex items-center space-x-4">
-                  <div className="text-primary">{detail.icon}</div>
+        <div className="max-w-2xl mx-auto">
+          <Card className="p-6">
+            <div className="space-y-6">
+              {companyDetails.map((detail) => (
+                <div key={detail.label} className="flex items-start space-x-4">
+                  <div className="text-primary mt-1">{detail.icon}</div>
                   <div>
                     <div className="text-sm text-gray-500">{detail.label}</div>
                     <div className="font-medium">{detail.value}</div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </Card>
         </div>
       </div>
     </section>
