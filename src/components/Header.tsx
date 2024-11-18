@@ -44,9 +44,9 @@ const Header = () => {
             <span className="text-2xl font-bold text-white">CodeWith</span>
           </Link>
 
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex">
             <NavigationMenu>
-              <NavigationMenuList>
+              <NavigationMenuList className="space-x-8">
                 <NavigationMenuItem>
                   <Link to="/" className="text-white hover:text-white/80 transition-colors duration-200">
                     ホーム
@@ -72,7 +72,7 @@ const Header = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 {menuItems.slice(1).map((item) => (
-                  <NavigationMenuItem key={item.name}>
+                  <NavigationMenuItem key={item.name} className="px-4">
                     <button
                       onClick={() => scrollToSection(item.href.replace("/#", ""))}
                       className="text-white hover:text-white/80 transition-colors duration-200"
