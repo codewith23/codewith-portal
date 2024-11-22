@@ -26,7 +26,7 @@ const serviceDetails = {
   },
   "it-consulting": {
     title: "DX学校 豊中校",
-    description: "ビジネスのデジタル化を支援",
+    description: "中小企業に特化したIT支援",
     businesses: [
       {
         title: "システム導入支援",

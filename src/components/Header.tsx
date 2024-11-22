@@ -16,7 +16,7 @@ const Header = () => {
 
   const services = [
     { name: "IT教育", href: "/services/it-education" },
-    { name: "ITコンサルティング", href: "/services/it-consulting" },
+    { name: "DX学校 豊中校", href: "/services/it-consulting" },
     { name: "ソフトウェア開発", href: "/services/software-development" },
   ];
 

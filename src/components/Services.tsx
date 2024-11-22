@@ -11,8 +11,8 @@ const services = [
   },
   {
     icon: <Users className="h-12 w-12 text-primary" />,
-    title: "ITコンサルティング",
-    description: "お客様のビジネスに最適なIT戦略を提案し、デジタル化をサポートします。",
+    title: "DX学校 豊中校",
+    description: "中小企業に特化したIT支援を提供し、デジタル化をサポートします。",
     slug: "it-consulting",
   },
   {
