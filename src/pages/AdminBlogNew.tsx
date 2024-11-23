@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
-import { BlogPost } from "@/types/blog";
 import { useToast } from "@/components/ui/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogForm from "@/components/BlogForm";
+import { BlogPost } from "@/types/blog";
 
 const AdminBlogNew = () => {
   const navigate = useNavigate();
@@ -14,12 +14,26 @@ const AdminBlogNew = () => {
 
   const handleSubmit = async (data: Partial<BlogPost>) => {
     setIsSubmitting(true);
-    const { error } = await supabase.from("posts").insert([
-      {
-        ...data,
-        created_at: new Date().toISOString(),
-      },
-    ]);
+    
+    // Ensure all required fields are present
+    if (!data.title || !data.excerpt || !data.content || !data.author) {
+      toast({
+        title: "エラー",
+        description: "必須項目を入力してください",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    const { error } = await supabase.from("posts").insert({
+      title: data.title,
+      excerpt: data.excerpt,
+      content: data.content,
+      author: data.author,
+      created_at: new Date().toISOString(),
+      image_url: data.image_url
+    });
 
     if (error) {
       toast({
