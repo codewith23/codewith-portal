@@ -14,15 +14,21 @@ const AdminBlogEdit = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Validate ID is a valid number
+  const parsedId = id ? parseInt(id) : null;
+  const isValidId = parsedId && !isNaN(parsedId);
+
   const { data: post } = useQuery({
     queryKey: ["admin-post", id],
     queryFn: async () => {
-      if (!id) throw new Error("No ID provided");
+      if (!isValidId) {
+        throw new Error("Invalid ID provided");
+      }
       
       const { data, error } = await supabase
         .from("posts")
         .select("*")
-        .eq("id", parseInt(id))
+        .eq("id", parsedId)
         .single();
 
       if (error) {
@@ -36,17 +42,24 @@ const AdminBlogEdit = () => {
 
       return data as BlogPost;
     },
-    enabled: !!id,
+    enabled: isValidId,
   });
 
   const handleSubmit = async (data: Partial<BlogPost>) => {
-    if (!id) return;
+    if (!isValidId) {
+      toast({
+        title: "エラー",
+        description: "無効なIDです",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsSubmitting(true);
     const { error } = await supabase
       .from("posts")
       .update(data)
-      .eq("id", parseInt(id));
+      .eq("id", parsedId);
 
     if (error) {
       toast({
@@ -64,6 +77,20 @@ const AdminBlogEdit = () => {
     });
     navigate("/admin/blog");
   };
+
+  if (!isValidId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        <Header />
+        <main className="pt-24 pb-16">
+          <div className="container mx-auto px-4 max-w-2xl">
+            <h1 className="text-3xl font-bold mb-8 text-red-600">無効なIDです</h1>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!post) {
     return null;
