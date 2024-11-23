@@ -67,7 +67,7 @@ const AdminBlog = () => {
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold gradient-text">記事管理</h1>
+            <h1 className="text-3xl font-bold text-primary">記事管理</h1>
             <Button onClick={() => navigate("/admin/blog/new")}>
               <PlusCircle className="mr-2 h-4 w-4" />
               新規作成
