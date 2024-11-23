@@ -7,6 +7,9 @@ import Index from "./pages/Index";
 import ServiceDetail from "./pages/ServiceDetail";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import AdminBlog from "./pages/AdminBlog";
+import AdminBlogNew from "./pages/AdminBlogNew";
+import AdminBlogEdit from "./pages/AdminBlogEdit";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +24,9 @@ const App = () => (
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/admin/blog" element={<AdminBlog />} />
+          <Route path="/admin/blog/new" element={<AdminBlogNew />} />
+          <Route path="/admin/blog/edit/:id" element={<AdminBlogEdit />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
