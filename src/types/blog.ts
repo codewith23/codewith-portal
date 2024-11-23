@@ -5,4 +5,6 @@ export interface BlogPost {
   content: string;
   date: string;
   author: string;
+  image_url?: string;
+  created_at: string;
 }

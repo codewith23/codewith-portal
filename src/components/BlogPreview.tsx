@@ -2,29 +2,62 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const dummyPosts = [
-  {
-    id: 1,
-    title: "ITで地域を活性化する新しい取り組み",
-    excerpt: "地域コミュニティとテクノロジーを組み合わせた新しい取り組みについて紹介します。",
-    date: "2024-03-01",
-  },
-  {
-    id: 2,
-    title: "シニア向けプログラミング教室の開催レポート",
-    excerpt: "先日開催したシニア向けプログラミング教室の様子をお伝えします。",
-    date: "2024-02-28",
-  },
-  {
-    id: 3,
-    title: "デジタル化で業務効率を上げる方法",
-    excerpt: "中小企業でもできる、簡単なデジタル化の方法をご紹介します。",
-    date: "2024-02-25",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { BlogPost } from "@/types/blog";
+import { useToast } from "@/components/ui/use-toast";
 
 const BlogPreview = () => {
+  const { toast } = useToast();
+
+  const { data: posts, isLoading } = useQuery({
+    queryKey: ['blog-preview'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (error) {
+        toast({
+          title: "エラー",
+          description: "記事の取得に失敗しました",
+          variant: "destructive",
+        });
+        throw error;
+      }
+
+      return data as BlogPost[];
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
+            ブログ
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="h-full animate-pulse">
+                <CardHeader>
+                  <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/4 mt-2"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="blog" className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
@@ -32,12 +65,14 @@ const BlogPreview = () => {
           ブログ
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {dummyPosts.map((post) => (
+          {posts?.map((post) => (
             <Link to={`/blog/${post.id}`} key={post.id}>
               <Card className="h-full hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="text-xl">{post.title}</CardTitle>
-                  <p className="text-sm text-gray-500">{post.date}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(post.created_at).toLocaleDateString('ja-JP')}
+                  </p>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-4">{post.excerpt}</p>

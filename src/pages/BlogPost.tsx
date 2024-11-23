@@ -1,43 +1,74 @@
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 import { BlogPost } from "@/types/blog";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-
-// 仮のデータ（後でAPIから取得するように変更可能）
-const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: "ITで地域を活性化する新しい取り組み",
-    excerpt: "地域コミュニティとテクノロジーを組み合わせた新しい取り組みについて紹介します。",
-    content: `
-    地域活性化とテクノロジーの融合について、具体的な事例を交えながら解説していきます。
-
-    1. 地域コミュニティのデジタル化
-    従来の地域コミュニティ活動をオンラインでも展開することで、より多くの住民が参加できるようになりました。
-    
-    2. テクノロジーを活用した新しい取り組み
-    - オンライン町内会システムの導入
-    - 地域情報共有アプリの開発
-    - 高齢者向けデジタル講座の開催
-    
-    3. 成果と今後の展望
-    これらの取り組みにより、地域コミュニティの活性化が進み、世代間交流も増加しています。
-    `,
-    date: "2024-03-01",
-    author: "CodeWith編集部"
-  },
-  // ... 他の記事データ
-];
+import { useToast } from "@/components/ui/use-toast";
 
 const BlogPostPage = () => {
   const { id } = useParams();
-  const post = blogPosts.find(post => post.id === Number(id));
+  const { toast } = useToast();
+
+  const { data: post, isLoading } = useQuery({
+    queryKey: ['blog-post', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        toast({
+          title: "エラー",
+          description: "記事の取得に失敗しました",
+          variant: "destructive",
+        });
+        throw error;
+      }
+
+      return data as BlogPost;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        <Header />
+        <main className="pt-24 pb-16">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/4 mb-8"></div>
+              <div className="space-y-4">
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!post) {
-    return <div>記事が見つかりません</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        <Header />
+        <main className="pt-24 pb-16">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <p className="text-center text-gray-600">記事が見つかりませんでした</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   return (
@@ -57,10 +88,17 @@ const BlogPostPage = () => {
               {post.title}
             </h1>
             <div className="flex items-center text-gray-500 mb-8">
-              <span>{post.date}</span>
+              <span>{new Date(post.created_at).toLocaleDateString('ja-JP')}</span>
               <span className="mx-2">•</span>
               <span>{post.author}</span>
             </div>
+            {post.image_url && (
+              <img
+                src={post.image_url}
+                alt={post.title}
+                className="w-full h-auto rounded-lg mb-8"
+              />
+            )}
             <div className="prose prose-lg max-w-none">
               {post.content.split('\n').map((paragraph, index) => (
                 <p key={index} className="mb-4">
