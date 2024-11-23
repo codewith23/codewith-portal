@@ -17,10 +17,12 @@ const AdminBlogEdit = () => {
   const { data: post } = useQuery({
     queryKey: ["admin-post", id],
     queryFn: async () => {
+      if (!id) throw new Error("No ID provided");
+      
       const { data, error } = await supabase
         .from("posts")
         .select("*")
-        .eq("id", id)
+        .eq("id", parseInt(id))
         .single();
 
       if (error) {
@@ -34,14 +36,17 @@ const AdminBlogEdit = () => {
 
       return data as BlogPost;
     },
+    enabled: !!id,
   });
 
   const handleSubmit = async (data: Partial<BlogPost>) => {
+    if (!id) return;
+    
     setIsSubmitting(true);
     const { error } = await supabase
       .from("posts")
       .update(data)
-      .eq("id", id);
+      .eq("id", parseInt(id));
 
     if (error) {
       toast({
