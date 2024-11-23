@@ -41,7 +41,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-white">CodeWith</span>
+            <span className="text-2xl font-bold text-white">株式会社CodeWith</span>
           </Link>
 
           <nav className="hidden md:flex">

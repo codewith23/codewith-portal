@@ -47,7 +47,7 @@ const BlogPreview = () => {
           ))}
         </div>
         <div className="text-center mt-8">
-          <Button className="bg-primary hover:bg-primary-hover">
+          <Button className="bg-primary hover:bg-primary-hover text-white">
             ブログ一覧へ <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
