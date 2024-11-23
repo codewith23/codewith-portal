@@ -3,7 +3,6 @@ export interface BlogPost {
   title: string;
   excerpt: string;
   content: string;
-  date: string;
   author: string;
   image_url?: string;
   created_at: string;
