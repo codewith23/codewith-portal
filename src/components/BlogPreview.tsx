@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const dummyPosts = [
   {
@@ -32,24 +33,28 @@ const BlogPreview = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {dummyPosts.map((post) => (
-            <Card key={post.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-xl">{post.title}</CardTitle>
-                <p className="text-sm text-gray-500">{post.date}</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                <Button variant="link" className="p-0 text-primary hover:text-primary-hover">
-                  続きを読む <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
+            <Link to={`/blog/${post.id}`} key={post.id}>
+              <Card className="h-full hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-xl">{post.title}</CardTitle>
+                  <p className="text-sm text-gray-500">{post.date}</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                  <Button variant="link" className="p-0 text-primary hover:text-primary-hover">
+                    続きを読む <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
         <div className="text-center mt-8">
-          <Button className="bg-primary hover:bg-primary-hover text-white">
-            ブログ一覧へ <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          <Link to="/blog">
+            <Button className="bg-primary hover:bg-primary-hover text-white">
+              ブログ一覧へ <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
