@@ -13,24 +13,27 @@ const blogPosts: BlogPost[] = [
     title: "ITで地域を活性化する新しい取り組み",
     excerpt: "地域コミュニティとテクノロジーを組み合わせた新しい取り組みについて紹介します。",
     content: "詳細な内容がここに入ります...",
-    date: "2024-03-01",
-    author: "CodeWith編集部"
+    author: "CodeWith編集部",
+    created_at: "2024-03-01T00:00:00Z",
+    date: "2024-03-01"
   },
   {
     id: 2,
     title: "シニア向けプログラミング教室の開催レポート",
     excerpt: "先日開催したシニア向けプログラミング教室の様子をお伝えします。",
     content: "詳細な内容がここに入ります...",
-    date: "2024-02-28",
-    author: "CodeWith編集部"
+    author: "CodeWith編集部",
+    created_at: "2024-02-28T00:00:00Z",
+    date: "2024-02-28"
   },
   {
     id: 3,
     title: "デジタル化で業務効率を上げる方法",
     excerpt: "中小企業でもできる、簡単なデジタル化の方法をご紹介します。",
     content: "詳細な内容がここに入ります...",
-    date: "2024-02-25",
-    author: "CodeWith編集部"
+    author: "CodeWith編集部",
+    created_at: "2024-02-25T00:00:00Z",
+    date: "2024-02-25"
   }
 ];
 
