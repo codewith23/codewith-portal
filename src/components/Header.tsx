@@ -8,15 +8,24 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="text-xl font-bold text-primary">
-            CodeWith
+            株式会社CodeWith
           </Link>
           <nav className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-gray-600 hover:text-primary">
               ホーム
             </Link>
+            <a href="/#services" className="text-gray-600 hover:text-primary">
+              サービス内容
+            </a>
+            <a href="/#company" className="text-gray-600 hover:text-primary">
+              会社情報
+            </a>
             <Link to="/blog" className="text-gray-600 hover:text-primary">
               ブログ
             </Link>
+            <a href="/#contact" className="text-gray-600 hover:text-primary">
+              お問い合わせ
+            </a>
             <Link to="/admin/blog">
               <Button variant="ghost" className="text-gray-600 hover:text-primary">
                 <Shield className="h-4 w-4 mr-2" />
