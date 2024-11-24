@@ -1,21 +1,35 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/components/ui/use-toast";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { BlogPost } from "@/types/blog";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { contentfulClient, IContentfulBlogPost } from "@/lib/contentful";
 
 const Blog = () => {
+  const { toast } = useToast();
+
   const { data: posts, isLoading } = useQuery({
     queryKey: ["blog-posts"],
     queryFn: async () => {
-      const response = await contentfulClient.getEntries<IContentfulBlogPost>({
-        content_type: 'blogPost',
-        order: ['sys.createdAt'],
-      });
-      return response.items;
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        toast({
+          title: "エラー",
+          description: "記事の取得に失敗しました",
+          variant: "destructive",
+        });
+        throw error;
+      }
+
+      return data as BlogPost[];
     },
   });
 
@@ -25,12 +39,9 @@ const Blog = () => {
         <Header />
         <main className="pt-24 pb-16">
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-12 gradient-text text-center">
-              ブログ
-            </h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {[1, 2, 3].map((i) => (
-                <Card key={i} className="h-full animate-pulse">
+                <Card key={i} className="animate-pulse">
                   <CardHeader>
                     <div className="h-6 bg-gray-200 rounded w-3/4"></div>
                     <div className="h-4 bg-gray-200 rounded w-1/4 mt-2"></div>
@@ -54,21 +65,21 @@ const Blog = () => {
       <Header />
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-12 gradient-text text-center">
-            ブログ
+          <h1 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
+            ブログ記事一覧
           </h1>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {posts?.map((post) => (
-              <Link to={`/blog/${post.fields.slug}`} key={post.sys.id}>
+              <Link to={`/blog/${post.id}`} key={post.id}>
                 <Card className="h-full hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-xl">{post.fields.title}</CardTitle>
+                    <CardTitle className="text-xl">{post.title}</CardTitle>
                     <p className="text-sm text-gray-500">
-                      {new Date(post.fields.publishDate).toLocaleDateString("ja-JP")}
+                      {new Date(post.created_at).toLocaleDateString("ja-JP")}
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 mb-4">{post.fields.excerpt}</p>
+                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
                     <Button
                       variant="link"
                       className="p-0 text-primary hover:text-primary-hover"
