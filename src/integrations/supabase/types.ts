@@ -24,7 +24,7 @@ export type Database = {
           content: string
           created_at?: string
           excerpt: string
-          id?: number
+          id?: never
           image_url?: string | null
           title: string
         }
@@ -33,7 +33,7 @@ export type Database = {
           content?: string
           created_at?: string
           excerpt?: string
-          id?: number
+          id?: never
           image_url?: string | null
           title?: string
         }
