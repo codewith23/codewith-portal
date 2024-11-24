@@ -3,33 +3,32 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { BlogPost } from "@/types/blog";
-import { useToast } from "@/components/ui/use-toast";
+import { contentfulClient } from "@/lib/contentful";
+
+interface BlogPost {
+  sys: {
+    id: string;
+  };
+  fields: {
+    title: string;
+    slug: string;
+    excerpt: string;
+    publishDate: string;
+    author: string;
+  };
+}
 
 const Blog = () => {
-  const { toast } = useToast();
-
   const { data: posts, isLoading } = useQuery({
     queryKey: ["blog-posts"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        toast({
-          title: "エラー",
-          description: "記事の取得に失敗しました",
-          variant: "destructive",
-        });
-        throw error;
-      }
-
-      return data as BlogPost[];
+      const response = await contentfulClient.getEntries({
+        content_type: 'blogPost',
+        order: '-fields.publishDate',
+      });
+      return response.items as BlogPost[];
     },
   });
 
@@ -73,16 +72,16 @@ const Blog = () => {
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {posts?.map((post) => (
-              <Link to={`/blog/${post.id}`} key={post.id}>
+              <Link to={`/blog/${post.fields.slug}`} key={post.sys.id}>
                 <Card className="h-full hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-xl">{post.title}</CardTitle>
+                    <CardTitle className="text-xl">{post.fields.title}</CardTitle>
                     <p className="text-sm text-gray-500">
-                      {new Date(post.created_at).toLocaleDateString("ja-JP")}
+                      {new Date(post.fields.publishDate).toLocaleDateString("ja-JP")}
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                    <p className="text-gray-600 mb-4">{post.fields.excerpt}</p>
                     <Button
                       variant="link"
                       className="p-0 text-primary hover:text-primary-hover"

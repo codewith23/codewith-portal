@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Shield, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
@@ -74,12 +72,6 @@ const Header = () => {
             <a href="/#contact" className="text-white hover:text-white/80">
               お問い合わせ
             </a>
-            <Link to="/admin/blog">
-              <Button variant="ghost" className="text-white hover:text-white/80">
-                <Shield className="h-4 w-4 mr-2" />
-                管理者
-              </Button>
-            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -152,14 +144,6 @@ const Header = () => {
               >
                 お問い合わせ
               </a>
-              <Link
-                to="/admin/blog"
-                className="text-white hover:text-white/80 px-4 py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Shield className="h-4 w-4 inline-block mr-2" />
-                管理者
-              </Link>
             </div>
           </nav>
         )}

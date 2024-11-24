@@ -2,36 +2,23 @@ import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import { BlogPost } from "@/types/blog";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+import { contentfulClient } from "@/lib/contentful";
 
 const BlogPostPage = () => {
-  const { id } = useParams();
-  const { toast } = useToast();
+  const { slug } = useParams();
 
   const { data: post, isLoading } = useQuery({
-    queryKey: ['blog-post', id],
+    queryKey: ['blog-post', slug],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error) {
-        toast({
-          title: "エラー",
-          description: "記事の取得に失敗しました",
-          variant: "destructive",
-        });
-        throw error;
-      }
-
-      return data as BlogPost;
+      const response = await contentfulClient.getEntries({
+        content_type: 'blogPost',
+        'fields.slug': slug,
+        limit: 1,
+      });
+      return response.items[0];
     },
   });
 
@@ -85,26 +72,22 @@ const BlogPostPage = () => {
           
           <article className="bg-white rounded-lg shadow-lg p-8">
             <h1 className="text-4xl font-bold mb-4 gradient-text">
-              {post.title}
+              {post.fields.title}
             </h1>
             <div className="flex items-center text-gray-500 mb-8">
-              <span>{new Date(post.created_at).toLocaleDateString('ja-JP')}</span>
+              <span>{new Date(post.fields.publishDate).toLocaleDateString('ja-JP')}</span>
               <span className="mx-2">•</span>
-              <span>{post.author}</span>
+              <span>{post.fields.author}</span>
             </div>
-            {post.image_url && (
+            {post.fields.heroImage && (
               <img
-                src={post.image_url}
-                alt={post.title}
+                src={post.fields.heroImage.fields.file.url}
+                alt={post.fields.title}
                 className="w-full h-auto rounded-lg mb-8"
               />
             )}
             <div className="prose prose-lg max-w-none">
-              {post.content.split('\n').map((paragraph, index) => (
-                <p key={index} className="mb-4">
-                  {paragraph}
-                </p>
-              ))}
+              {post.fields.content}
             </div>
           </article>
         </div>
