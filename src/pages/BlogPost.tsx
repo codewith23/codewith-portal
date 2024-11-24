@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { contentfulClient } from "@/lib/contentful";
+import { contentfulClient, IContentfulBlogPost } from "@/lib/contentful";
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -13,7 +13,7 @@ const BlogPostPage = () => {
   const { data: post, isLoading } = useQuery({
     queryKey: ['blog-post', slug],
     queryFn: async () => {
-      const response = await contentfulClient.getEntries({
+      const response = await contentfulClient.getEntries<IContentfulBlogPost>({
         content_type: 'blogPost',
         'fields.slug': slug,
         limit: 1,

@@ -5,30 +5,18 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { contentfulClient } from "@/lib/contentful";
-
-interface BlogPost {
-  sys: {
-    id: string;
-  };
-  fields: {
-    title: string;
-    slug: string;
-    excerpt: string;
-    publishDate: string;
-    author: string;
-  };
-}
+import { contentfulClient, IContentfulBlogPost } from "@/lib/contentful";
+import { Entry } from "contentful";
 
 const Blog = () => {
   const { data: posts, isLoading } = useQuery({
     queryKey: ["blog-posts"],
     queryFn: async () => {
-      const response = await contentfulClient.getEntries({
+      const response = await contentfulClient.getEntries<IContentfulBlogPost>({
         content_type: 'blogPost',
-        order: '-fields.publishDate',
+        order: ['-fields.publishDate'],
       });
-      return response.items as BlogPost[];
+      return response.items;
     },
   });
 
