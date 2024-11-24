@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { contentfulClient, IContentfulBlogPost } from "@/lib/contentful";
-import { Entry } from "contentful";
 
 const Blog = () => {
   const { data: posts, isLoading } = useQuery({
@@ -14,7 +13,7 @@ const Blog = () => {
     queryFn: async () => {
       const response = await contentfulClient.getEntries<IContentfulBlogPost>({
         content_type: 'blogPost',
-        order: ['-fields.publishDate'],
+        order: ['sys.createdAt'],
       });
       return response.items;
     },

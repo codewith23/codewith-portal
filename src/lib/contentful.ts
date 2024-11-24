@@ -1,17 +1,23 @@
 import { createClient } from 'contentful';
 
 if (!import.meta.env.VITE_CONTENTFUL_SPACE_ID || !import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN) {
-  throw new Error('Missing Contentful environment variables');
+  console.warn('Contentful environment variables are missing. Blog functionality will be limited.');
 }
 
 export const contentfulClient = createClient({
-  space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
-  accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
+  space: import.meta.env.VITE_CONTENTFUL_SPACE_ID || 'dummy-space-id',
+  accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN || 'dummy-token',
 });
 
-// Contentfulのコンテンツ型定義
 export interface IContentfulBlogPost {
-  contentTypeId: "blogPost";
+  sys: {
+    id: string;
+    contentType: {
+      sys: {
+        id: string;
+      };
+    };
+  };
   fields: {
     title: string;
     slug: string;
